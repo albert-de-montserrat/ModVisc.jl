@@ -42,33 +42,31 @@ total melt fraction and keeps the auxiliary internal, avoiding that ambiguity.
 ## Solver behavior
 
 `viscosity` starts both effective viscosities at the intrinsic matrix shear
-viscosity and performs the fixed-point iteration used by the MATLAB program.
-Convergence is tested against
+viscosity and performs a fixed-point iteration for the coupled effective
+viscosities. Convergence is tested against
 
 ```text
 absolute_tolerance + relative_tolerance * matrix_shear
 ```
 
-for both effective viscosities. The default relative tolerance, `1e-10`,
-matches the scale-dependent stopping tolerance in the original code.
+for both effective viscosities. The default relative tolerance is `1e-10`.
 
-The elastic API defaults to `1e-11`, matching the separate bulk- and
-shear-modulus tolerances in the original elastic solver.
+The elastic API defaults to a relative tolerance of `1e-11`.
 
 Above the disaggregation porosity, the physical fixed point is zero. The
 iteration generally approaches a small positive number, so callers should use
-the `converged` field and a scale-aware plotting cutoff. The paper scripts use
-`1e-3 * eta_s0`, matching the original MATLAB plotting default.
+the `converged` field and a scale-aware plotting cutoff. The figure
+reproductions use `1e-3 * eta_s0`.
 
-The elastic path performs three coupled solves matching the original algorithm.
+The elastic path performs three coupled solves.
 Moduli must use a consistent unit system. Wave speeds have the corresponding
 derived units; using pascals and kilograms per cubic metre produces metres per
 second.
 
 ## Figure reproduction limits
 
-The scripts reproduce the self-consistent model curves in Figures 2 and 3 and
-the equation 5 fits. Figure 2 also contains experimental and external-model
-curves from Kohlstedt et al. (2000), Hirth & Kohlstedt (1995), and Takei &
-Holtzman (2009). Their underlying data are not included in the supplied source
-folder, so those overlays are intentionally absent.
+The included Julia example reproduces the self-consistent model curves in
+Figures 2 and 3 and the equation 5 fits. Figure 2 also contains experimental
+and external-model curves from Kohlstedt et al. (2000), Hirth & Kohlstedt
+(1995), and Takei & Holtzman (2009). Their underlying numerical data are not
+distributed with this package, so those overlays are absent.

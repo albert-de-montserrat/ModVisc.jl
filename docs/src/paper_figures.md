@@ -14,7 +14,8 @@ julia --project=examples examples/paper_figures.jl
 ```
 
 It writes PNG versions of both figures to `examples/output/`. Curves below
-`1e-3` are omitted, following the cutoff used by the original plotting code.
+`1e-3` are omitted to suppress the small nonconverged tail beyond
+disaggregation.
 
 ## Figure 2: pore geometry and disaggregation
 
@@ -63,7 +64,7 @@ The upper family of curves is the bulk viscosity and the lower family is the
 shear viscosity. Each curve terminates when the connected solid framework
 disaggregates. The experimental and external-model overlays in the published
 figure are absent because their numerical data are not included with the
-original ModVisc source.
+package.
 
 [Open Figure 2 at full resolution](assets/figure2.png)
 
