@@ -14,3 +14,8 @@ makedocs(
     ],
     checkdocs=:exports,
 )
+
+deploydocs(
+    repo="github.com/albert-de-montserrat/ModVisc.jl.git",
+    devbranch="main",
+)
