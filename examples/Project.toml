@@ -1,0 +1,10 @@
+[deps]
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+ModVisc = "7ac6acf9-9504-42ca-8b27-30f06de1ab91"
+
+[sources]
+ModVisc = {path = ".."}
+
+[compat]
+GLMakie = "0.13"
+julia = "1.10"

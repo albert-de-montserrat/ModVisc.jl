@@ -1,0 +1,13 @@
+name = "ModVisc"
+uuid = "7ac6acf9-9504-42ca-8b27-30f06de1ab91"
+version = "0.1.0"
+authors = ["albert-de-montserrat <albert.de.montserrat@gmail.com>"]
+
+[compat]
+julia = "1.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
