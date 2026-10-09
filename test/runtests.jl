@@ -187,6 +187,11 @@ end
 
 @testset "profiles and published spheroid fit" begin
     sphere = ViscousModel(1.0, MeltFraction(Spheroid(1.0), 1.0))
+    scalar_profile = @inferred viscosity_profile(sphere, 0.01)
+    @test scalar_profile isa ViscosityResult{Float64}
+    @test scalar_profile == viscosity(sphere, 0.01)
+    @test @allocated(viscosity_profile(sphere, 0.01)) == 0
+
     porosity = 10.0 .^ range(-4, -1; length=8)
     profile = viscosity_profile(sphere, porosity)
     @test size(profile.bulk) == size(porosity)

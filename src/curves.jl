@@ -13,10 +13,16 @@ function viscosity!(bulk, shear, poisson, model::ViscousModel, porosities,
 end
 
 """
-    viscosity_profile(model, porosities[, options])
+    viscosity_profile(model, porosity_or_porosities[, options])
 
-Calculate effective viscosities over a collection of porosities.
+Calculate effective viscosities at one porosity or over an array of porosities.
+Scalar input returns a `ViscosityResult`; array input returns arrays in a named
+tuple.
 """
+@inline viscosity_profile(model::ViscousModel, porosity::Real,
+                          options::SolverOptions=SolverOptions()) =
+    viscosity(model, porosity, options)
+
 function viscosity_profile(model::ViscousModel, porosities::AbstractArray,
                            options::SolverOptions=SolverOptions())
     T = promote_type(typeof(model.matrix_shear), eltype(porosities))
