@@ -13,6 +13,14 @@ model = ViscousModel(1.0, MeltFraction(Tube(0.0), 1.0))
 viscosity(model, 0.05)
 ```
 
+`viscosity_profile` also dispatches on a scalar porosity and returns a
+`ViscosityResult`:
+
+```@example viscous
+result = viscosity_profile(model, 0.05)
+result.bulk
+```
+
 For several porosities, use the explicit profile API or collection dispatch:
 
 ```@example viscous
