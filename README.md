@@ -39,6 +39,14 @@ See [`docs/src/model.md`](docs/src/model.md) for the equation mapping and
 [`examples/paper_figures.jl`](examples/paper_figures.jl) for the paper figure
 reproduction workflow.
 
+## Paper figure reproduction
+
+[![Normalized effective bulk and shear viscosity for spheroids, tubes, and mixed pore geometries.](docs/src/assets/figure2.png)](https://albert-de-montserrat.github.io/ModVisc.jl/dev/paper_figures/)
+
+Reproduction of the model curves in Figure 2 of Schmeling, Kruse & Richard
+(2012). See the [paper figures documentation](https://albert-de-montserrat.github.io/ModVisc.jl/dev/paper_figures/)
+for the Julia code, Figure 3, and the limits of the reproduction.
+
 ## Reference
 
 Schmeling, H., Kruse, J. P. & Richard, G. (2012). Effective shear and bulk
