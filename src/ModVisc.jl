@@ -14,10 +14,14 @@ export AbstractGeometry,
        viscosity,
        viscosity!,
        viscosity_profile,
+       viscosity_profile!,
+       elasticity!,
        elasticity_profile,
+       elasticity_profile!,
        poisson_ratio,
        elasticity,
-       spheroid_fit
+       spheroid_fit,
+       spheroid_fit!
 
 include("geometries.jl")
 include("parameters.jl")

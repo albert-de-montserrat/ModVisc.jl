@@ -16,9 +16,10 @@ function visible_curve!(axis, porosity, values; kwargs...)
 end
 
 function model_lines!(axis, porosity, model; label, kwargs...)
-    curve = viscosity_profile(model, porosity)
-    visible_curve!(axis, porosity, curve.bulk; label, kwargs...)
-    visible_curve!(axis, porosity, curve.shear; kwargs...)
+    bulk, shear = similar(porosity), similar(porosity)
+    viscosity_profile!(bulk, shear, similar(porosity), model, porosity)
+    visible_curve!(axis, porosity, bulk; label, kwargs...)
+    visible_curve!(axis, porosity, shear; kwargs...)
 end
 
 function figure2()
@@ -80,14 +81,15 @@ function figure3()
 
     for (i, alpha) in enumerate((0.01, 0.03, 0.1, 0.3, 1.0))
         color = Makie.wong_colors()[mod1(i, length(Makie.wong_colors()))]
-        curve = viscosity_profile(pure(Spheroid(alpha)), porosity)
-        fits = spheroid_fit.(porosity, alpha)
-        fit_bulk = getproperty.(fits, :bulk)
-        fit_shear = getproperty.(fits, :shear)
+        bulk, shear = similar(porosity), similar(porosity)
+        viscosity_profile!(bulk, shear, similar(porosity),
+                           pure(Spheroid(alpha)), porosity)
+        fit_bulk, fit_shear = similar(porosity), similar(porosity)
+        spheroid_fit!(fit_bulk, fit_shear, porosity, alpha)
 
-        visible_curve!(ax, porosity, curve.bulk;
+        visible_curve!(ax, porosity, bulk;
                        color, label="alpha=$alpha numerical")
-        visible_curve!(ax, porosity, curve.shear; color)
+        visible_curve!(ax, porosity, shear; color)
         visible_curve!(ax, porosity, fit_bulk;
                        color, linestyle=:dot, label="alpha=$alpha fit")
         visible_curve!(ax, porosity, fit_shear; color, linestyle=:dot)

@@ -107,6 +107,27 @@ end
     @test all(profile.converged)
     @test all(diff(profile.unrelaxed_bulk) .< 0)
     @test all(profile.unrelaxed_p_speed .> profile.unrelaxed_s_speed)
+    inplace_outputs = ntuple(_ -> similar(profile.unrelaxed_bulk), 8)
+    inplace_converged = similar(profile.converged)
+    @test elasticity_profile!(inplace_outputs..., inplace_converged,
+                              connected, [0.001, 0.01, 0.1]) ==
+          (inplace_outputs..., inplace_converged)
+    @test inplace_outputs[1] == profile.unrelaxed_bulk
+    @test inplace_outputs[2] == profile.unrelaxed_shear
+    @test inplace_outputs[3] == profile.relaxed_bulk
+    @test inplace_outputs[4] == profile.relaxed_shear
+    @test inplace_outputs[5] == profile.unrelaxed_p_speed
+    @test inplace_outputs[6] == profile.unrelaxed_s_speed
+    @test inplace_outputs[7] == profile.relaxed_p_speed
+    @test inplace_outputs[8] == profile.relaxed_s_speed
+    @test inplace_converged == profile.converged
+    @test elasticity!(inplace_outputs..., inplace_converged,
+                      connected, [0.001, 0.01, 0.1]) ==
+          (inplace_outputs..., inplace_converged)
+    @test_throws DimensionMismatch elasticity_profile!(
+        ntuple(_ -> similar(profile.unrelaxed_bulk, 2), 8)...,
+        similar(profile.converged, 2), connected, [0.001, 0.01, 0.1],
+    )
     @test elasticity(connected, [0.001, 0.01]).relaxed_bulk ==
           elasticity_profile(connected, [0.001, 0.01]).relaxed_bulk
 end
@@ -199,11 +220,30 @@ end
     @test all(diff(profile.bulk) .< 0)
     @test all(diff(profile.shear) .< 0)
     @test viscosity(sphere, porosity).bulk == profile.bulk
+    inplace_bulk = similar(porosity)
+    inplace_shear = similar(porosity)
+    inplace_poisson = similar(porosity)
+    @test viscosity_profile!(inplace_bulk, inplace_shear, inplace_poisson,
+                             sphere, porosity) ==
+          (inplace_bulk, inplace_shear, inplace_poisson)
+    @test (inplace_bulk, inplace_shear, inplace_poisson) ==
+          (profile.bulk, profile.shear, viscosity_profile(sphere, porosity).poisson)
+    @test viscosity!(inplace_bulk, inplace_shear, inplace_poisson, sphere,
+                     porosity) == (inplace_bulk, inplace_shear, inplace_poisson)
 
     fit = spheroid_fit(1e-6, 1.0)
     @test fit.bulk ≈ 4 / (3e-6) rtol=1e-4
     @test fit.shear ≈ 1 rtol=1e-4
     @test spheroid_fit(0.51, 1.0) == (bulk=0.0, shear=0.0)
+    fit_bulk, fit_shear = similar(porosity), similar(porosity)
+    @test spheroid_fit!(fit_bulk, fit_shear, porosity, 1.0) ==
+          (fit_bulk, fit_shear)
+    fits = spheroid_fit.(porosity, 1.0)
+    @test fit_bulk == getproperty.(fits, :bulk)
+    @test fit_shear == getproperty.(fits, :shear)
+    @test_throws DimensionMismatch spheroid_fit!(
+        fit_bulk, fit_shear, porosity, fill(1.0, length(porosity) - 1),
+    )
     @test @inferred(spheroid_fit(0.01f0, 0.1f0, 1.0f0)) isa
           @NamedTuple{bulk::Float32, shear::Float32}
 end

@@ -29,6 +29,14 @@ profile = viscosity_profile(model, porosities)
 profile.bulk == viscosity(model, porosities).bulk
 ```
 
+Use `viscosity_profile!` to write into preallocated arrays:
+
+```@example viscous
+bulk, shear, poisson = similar(porosities), similar(porosities), similar(porosities)
+viscosity_profile!(bulk, shear, poisson, model, porosities)
+bulk == profile.bulk
+```
+
 ## Elastic example
 
 ```@example elastic
@@ -49,3 +57,6 @@ elasticity(model, 0.01)
 profile = elasticity_profile(model, [0.001, 0.01, 0.1])
 profile.relaxed_bulk == elasticity(model, [0.001, 0.01, 0.1]).relaxed_bulk
 ```
+
+`elasticity_profile!` and `spheroid_fit!` likewise fill preallocated arrays;
+see their docstrings for the output-array order.
