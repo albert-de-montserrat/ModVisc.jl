@@ -9,6 +9,7 @@ makedocs(
     pages=[
         "Home" => "index.md",
         "Mathematical model" => "model.md",
+        "Paper figures" => "paper_figures.md",
         "API" => "api.md",
     ],
     checkdocs=:exports,
