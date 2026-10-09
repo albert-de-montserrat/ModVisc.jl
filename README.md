@@ -48,5 +48,6 @@ filled poroelastic medium. *Geophysical Journal International*, 190,
 
 ## License
 
-This package is distributed under the BSD 2-Clause License. It retains the
-copyright and redistribution terms of the original MATLAB implementation.
+ModVisc.jl is distributed under the MIT License. Portions derived from the
+original MATLAB implementation remain subject to its BSD 2-Clause notice in
+[THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
